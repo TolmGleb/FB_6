@@ -21,5 +21,55 @@
             <button>Войти</button>
         </form>
     </div>
+
+    <script>
+        const API_URL = 'http://localhost:8080';
+    
+        const registerForm = document.getElementById('register');
+        const loginForm = document.getElementById('login');
+    
+        registerForm.addEventListener('submit', async (a) => {
+            a.preventDefault();
+    
+            const login = registerForm.registerNick.value;
+            const pass = registerForm.registerPass.value;
+    
+            const res = await fetch(`${API_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ login, pass }),
+                credentials: 'include'
+            });
+    
+            if(!res.ok) {
+                alert('Ошибка при регистрации');
+            } else {
+                registerForm.registerNick.value = "";
+                registerForm.registerPass.value = "";
+
+                alert('Регистрация успешна!');
+            }
+        });
+    
+        loginForm.addEventListener('submit', async (a) => {
+            a.preventDefault();
+    
+            const login = loginForm.loginNick.value;
+            const pass = loginForm.loginPass.value;
+    
+            const res = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ login, pass }),
+                credentials: 'include'
+            })
+    
+            if (res.ok) {
+                location.href = '/profile';
+            } else {
+                alert('Неверные данные');
+            }
+        });
+    </script>
 </body>
 </html>
